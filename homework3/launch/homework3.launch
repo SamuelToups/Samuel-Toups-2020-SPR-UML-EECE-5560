@@ -1,0 +1,8 @@
+<launch>
+  <include file="$(find homework1_code)/launch/homework1.launch"/>
+
+  <node pkg="homework3" name="chatterCounter" type="chatterCounter.py">
+    <remap from="chatter" to="homework1/chatter"/>
+  </node>
+
+</launch>
