@@ -9,7 +9,6 @@ class openLoopController:
     
     def __init__(self):
         self.cmd_pub = rospy.Publisher("/ademonicduckofsomesort/car_cmd_switch_node/cmd", Twist2DStamped, queue_size=1)
-        self.trim = rospy.get_param('/ademonicduckofsomesort/kinematics_node/trim')
 
 
 if __name__ == "__main__":
