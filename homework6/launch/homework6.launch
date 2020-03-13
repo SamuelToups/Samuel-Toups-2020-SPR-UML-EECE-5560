@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="homework6" name="odom_to_pose" type="odom_to_pose.py"/>
+  <include file="$(find odometry_hw)/launch/odom_hw.launch"/>
+</launch>
