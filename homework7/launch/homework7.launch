@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="homework7" name="hw7_pid_loop" type="hw7_pid_loop.py"/>
+  <include file="$(find controls_hw)/launch/start_with_graph.launch"/>
+</launch>
