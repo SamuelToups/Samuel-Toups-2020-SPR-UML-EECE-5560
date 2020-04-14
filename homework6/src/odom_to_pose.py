@@ -11,7 +11,7 @@ class odomToPose:
         self.x = 0
         self.y = 0
         self.theta = 0
-        self.L = 0.05
+        self.L = 0.0625
     
     def callback(self, data):
         pose_message = Pose2D()
