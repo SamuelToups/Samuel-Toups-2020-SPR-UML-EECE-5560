@@ -1,0 +1,6 @@
+<launch>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_white" args="/image_white"/>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_yellow" args="/image_yellow"/>
+  <include file="$(find homework9)/launch/homework9.launch"/>
+  <node name="image_pub" pkg="image_processing_hw" type="image_pub.py" args="$(find image_processing_hw)/../sample_images/image4.png"/>
+</launch>
