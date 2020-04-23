@@ -2,5 +2,6 @@
   <node pkg="mp2" name="wheel_cmd_to_odom" type="wheel_cmd_to_odom.py"/>
   <node pkg="homework6" name="odom_to_pose" type="odom_to_pose.py">
     <remap from="dist_wheel" to="/ademonicduckofsomesort/wheel_cmd_to_odom_node/odom"/>
+    <remap from="pose" to="/ademonicduckofsomesort/pose"/>
   </node>
 </launch>
