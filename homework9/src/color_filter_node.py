@@ -17,7 +17,7 @@ class ColorFilterNode:
         cv_bgr8_image = self.bridge.imgmsg_to_cv2(cropped, "bgr8")
         cv_hsv_image = cv2.cvtColor(cv_bgr8_image, cv2.COLOR_BGR2HSV)
         
-        cv_mono8_white_image = cv2.inRange(cv_hsv_image, (0, 0, 128), (180, 100, 255))
+        cv_mono8_white_image = cv2.inRange(cv_hsv_image, (0, 0, 192), (180, 100, 255))
         ros_white_image = self.bridge.cv2_to_imgmsg(cv_mono8_white_image, "mono8")
         
         cv_mono8_yellow_image = cv2.inRange(cv_hsv_image, (15,100,100),(35,255,255))

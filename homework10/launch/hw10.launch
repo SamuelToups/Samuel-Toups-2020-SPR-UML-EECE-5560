@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="homework10" name="line_filter_node" type="line-detector.py" />
+  <include file="$(find homework9)/launch/homework9.launch"/>
+</launch>

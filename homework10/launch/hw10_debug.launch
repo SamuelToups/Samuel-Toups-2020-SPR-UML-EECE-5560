@@ -1,0 +1,13 @@
+<launch>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_cropped" args="/image_cropped"/>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_white" args="/image_white"/>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_yellow" args="/image_yellow"/>
+  <!--<node pkg="rqt_image_view" type="rqt_image_view" name="image_view_canny" args="/image_canny"/>-->
+  <!--<node pkg="rqt_image_view" type="rqt_image_view" name="image_view_edges_white" args="/image_edges_white"/>-->
+  <!--<node pkg="rqt_image_view" type="rqt_image_view" name="image_view_edges_yellow" args="/image_edges_yellow"/>-->
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_lines_white" args="/image_lines_white"/>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_lines_yellow" args="/image_lines_yellow"/>
+  <node pkg="rqt_image_view" type="rqt_image_view" name="image_view_lines_all" args="/image_lines_all"/>
+  <include file="$(find homework10)/launch/hw10.launch"/>
+  <node name="image_pub" pkg="image_processing_hw" type="image_pub.py" args="$(find image_processing_hw)/../sample_images/image0.png"/>
+</launch>
