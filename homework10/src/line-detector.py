@@ -52,10 +52,12 @@ class LineDetectorNode:
         #ros_canny_debug = self.bridge.cv2_to_imgmsg(edges_all_image, "mono8")
         #self.canny_pub.publish(ros_canny_debug)
         
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3,3))
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5,5))
         
         white_image_erode = cv2.erode(self.white_image, kernel)
         yellow_image_erode = cv2.erode(self.yellow_image, kernel)
+        
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9,9))
         
         white_image_erode_dilate = cv2.dilate(white_image_erode, kernel)
         yellow_image_erode_dilate = cv2.dilate(yellow_image_erode, kernel)
