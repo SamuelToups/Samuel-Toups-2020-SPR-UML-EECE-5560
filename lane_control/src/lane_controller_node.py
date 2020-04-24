@@ -12,9 +12,9 @@ class pidData:
         self.integral = 0.0
         #self.dt = 1.0 / 1000.0
         self.prev_time = rospy.Time.now()
-        self.Kp = 1.0
+        self.Kp = 5.0
         self.Ki = 0.0
-        self.Kd = 0.0
+        self.Kd = 1.0
 
 class laneController:
     def __init__(self):
@@ -61,7 +61,7 @@ class laneController:
         self.phi_pid.integral = self.phi_pid.integral + phi_error * dt
         phi_derivative = ( phi_error - self.phi_pid.prev_error ) / dt
         phi_out = self.phi_pid.Kp * phi_error + self.phi_pid.Ki * self.phi_pid.integral + self.phi_pid.Kd * phi_derivative
-        if abs(phi_out) < 5.0:
+        if abs(phi_out) < 3.0:
             phi_out = 0
         else:
             phi_out = -1.0 * phi_out
@@ -71,9 +71,13 @@ class laneController:
         #d_error = data.d
         #self.d_pid.integral = self.d_pid.integral + d_error * dt
         #d_derivative = ( d_error - self.d_pid.prev_error ) / dt
-        #control_message.v = self.d_pid.Kp * d_error + self.d_pid.Ki * self.d_pid.integral + self.d_pid.Kd * d_derivative
+        #control_message.v = self.d_pid.Kp * d_error + self.d_pid.Ki * self.d_pid.integral + self.d_pid.Kd * d_derivative + 0.5
         #self.d_pid.prev_error = d_error
         control_message.v = 0.0
+
+        if control_message.v == 0.0 and control_message.omega == 0.0:
+            rospy.logwarn("CUSTOM LANE CONTROLLER: RETURNING BECAUSE BOTH V AND OMEGA ARE ZERO")
+            return
 
         h = std_msgs.msg.Header()
         h.stamp = rospy.Time.now()
