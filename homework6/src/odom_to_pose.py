@@ -11,12 +11,13 @@ class odomToPose:
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
-        self.L = 0.0025
+        self.L = 0.00625
+        self.delta_theta_correction = 90.0 / 20.0
     
     def callback(self, data):
         pose_message = Pose2D()
 	delta_s = ( data.dist_wheel_left + data.dist_wheel_right ) / 2.0
-        delta_theta = ( data.dist_wheel_right - data.dist_wheel_left ) / ( 2.0 * self.L )
+        delta_theta = ( data.dist_wheel_right - data.dist_wheel_left ) / ( 2.0 * self.L ) # * self.delta_theta_correction
         delta_x = delta_s * math.cos( self.theta + ( delta_theta / 2.0 ) )
         delta_y = delta_s * math.sin( self.theta + ( delta_theta / 2.0 ) )
         self.x += delta_x
