@@ -4,6 +4,8 @@ import rospy
 from duckietown_msgs.msg import WheelsCmdStamped
 from odometry_hw.msg import DistWheel, Pose2D
 
+#using node from homework6 to calculate pose from wheel distances
+
 class wheelCmdToOdom:
     def __init__(self):
         rospy.Subscriber("/ademonicduckofsomesort/wheels_driver_node/wheels_cmd_executed", WheelsCmdStamped, self.cmd_to_odom_callback)

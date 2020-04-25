@@ -12,9 +12,9 @@ class pidData:
         self.integral = 0.0
         #self.dt = 1.0 / 1000.0
         self.prev_time = rospy.Time.now()
-        self.Kp = 5.0
+        self.Kp = 1.0
         self.Ki = 0.0
-        self.Kd = 1.0
+        self.Kd = 0.0
 
 class laneController:
     def __init__(self):
@@ -24,13 +24,15 @@ class laneController:
         self.pub = rospy.Publisher('~car_cmd', Twist2DStamped, queue_size=1)
         self.phi_pid = pidData()
         #phi_pid tuning data
-        self.phi_pid.Kp = 5.0
+        self.phi_pid.Kp = 3.0
         self.phi_pid.Ki = 0.0
-        self.phi_pid.Kd = 1.0
+        self.phi_pid.Kd = 0.0
+
+#only need 1 set of pid numbers
 
         self.d_pid = pidData()
         #d_pid tuning data
-        self.d_pid.Kp = 1.0
+        self.d_pid.Kp = 3.0
         self.d_pid.Ki = 0.0
         self.d_pid.Kd = 0.0
 
@@ -57,27 +59,27 @@ class laneController:
         rospy.logwarn("CUSTOM LANE CONTROLLER: PAST RETURN POINTS")
         control_message = Twist2DStamped()
 
-        phi_error = data.phi
+        phi_error = 0.0 - data.phi
         self.phi_pid.integral = self.phi_pid.integral + phi_error * dt
         phi_derivative = ( phi_error - self.phi_pid.prev_error ) / dt
         phi_out = self.phi_pid.Kp * phi_error + self.phi_pid.Ki * self.phi_pid.integral + self.phi_pid.Kd * phi_derivative
-        if abs(phi_out) < 3.0:
-            phi_out = 0
-        else:
-            phi_out = -1.0 * phi_out
-        control_message.omega = phi_out
         self.phi_pid.prev_error = phi_error
 
-        #d_error = data.d
-        #self.d_pid.integral = self.d_pid.integral + d_error * dt
-        #d_derivative = ( d_error - self.d_pid.prev_error ) / dt
-        #control_message.v = self.d_pid.Kp * d_error + self.d_pid.Ki * self.d_pid.integral + self.d_pid.Kd * d_derivative + 0.5
-        #self.d_pid.prev_error = d_error
-        control_message.v = 0.0
+#combine phi and d to get omega
 
-        if control_message.v == 0.0 and control_message.omega == 0.0:
-            rospy.logwarn("CUSTOM LANE CONTROLLER: RETURNING BECAUSE BOTH V AND OMEGA ARE ZERO")
-            return
+        d_error = 0.0 - data.d
+        self.d_pid.integral = self.d_pid.integral + d_error * dt
+        d_derivative = ( d_error - self.d_pid.prev_error ) / dt
+        d_out = self.d_pid.Kp * d_error + self.d_pid.Ki * self.d_pid.integral + self.d_pid.Kd * d_derivative + 0.5
+        self.d_pid.prev_error = d_error
+        
+        control_message.omega = phi_out + d_out
+
+        control_message.v = 0.3
+
+#        if control_message.v == 0.0 and control_message.omega == 0.0:
+#            rospy.logwarn("CUSTOM LANE CONTROLLER: RETURNING BECAUSE BOTH V AND OMEGA ARE ZERO")
+#            return
 
         h = std_msgs.msg.Header()
         h.stamp = rospy.Time.now()
