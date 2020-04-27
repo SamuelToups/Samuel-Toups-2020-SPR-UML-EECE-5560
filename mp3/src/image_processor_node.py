@@ -3,12 +3,16 @@
 import rospy
 import cv2
 import numpy as np
-from sensor_msgs.msg import CompressedImage
+from sensor_msgs.msg import CompressedImage, Image
 from cv_bridge import CvBridge
+#from duckietown_msgs.msg import SegmentList
 
 class ImageProcessor:
     def __init__(self):
         rospy.Subscriber("anti_instagram_node/corrected_image/compressed", CompressedImage, self.lanefilter_cb, queue_size=1, buf_size=2**24)
+        self.image_pub = rospy.Publisher("image_lines_all", Image, queue_size=1)
+        #ideally the line detector node would publish only the data about the lines, and only publish the images when in debug mode
+        #self.lines_pub = rospy.Publisher("segment_list", SegmentList, queue_size=1)
         self.bridge = CvBridge()
 
     def output_lines(self, original_image, lines):
@@ -58,7 +62,18 @@ class ImageProcessor:
         lines_yellow_image = self.output_lines(cv_cropped, lines_yellow)
         lines_all_image = self.output_lines(lines_white_image, lines_yellow)
 
+        ros_lines_all_image = self.bridge.cv2_to_imgmsg(lines_all_image, "bgr8")
 
+        #if debug mode:
+        self.image_pub.publish(ros_lines_all_image)
+
+        #append the line segments white and for yellow
+        #self.lines_pub.publish(line_segments_all)
+
+if __name__ == "__main__":
+    rospy.init_node("line_detector_node", anonymous=True)
+    image_processor_node = ImageProcessor()
+    rospy.spin()
 
 
 
