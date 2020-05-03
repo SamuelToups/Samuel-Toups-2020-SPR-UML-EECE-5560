@@ -9,7 +9,7 @@ from cv_bridge import CvBridge
 
 class ImageProcessor:
     def __init__(self):
-        rospy.Subscriber("anti_instagram_node/corrected_image/compressed", CompressedImage, self.lanefilter_cb, queue_size=1, buf_size=2**24)
+        rospy.Subscriber("/ademonicduckofsomesort/anti_instagram_node/corrected_image/compressed", CompressedImage, self.lanefilter_cb, queue_size=1, buff_size=2**24)
         self.image_pub = rospy.Publisher("image_lines_all", Image, queue_size=1)
         #ideally the line detector node would publish only the data about the lines, and only publish the images when in debug mode
         #self.lines_pub = rospy.Publisher("segment_list", SegmentList, queue_size=1)
@@ -27,7 +27,7 @@ class ImageProcessor:
 
     def lanefilter_cb(self, msg):
         #crop
-        cv_image = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
+        cv_img = self.bridge.compressed_imgmsg_to_cv2(msg, "bgr8")
         cv_img_dim = cv_img.shape
         cv_img_height = cv_img_dim[0]
         cv_img_width = cv_img_dim[1]

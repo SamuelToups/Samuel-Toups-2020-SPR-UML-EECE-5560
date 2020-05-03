@@ -1,0 +1,3 @@
+<launch>
+  <node pkg="mp3" type="image_processor_node.py" name="st_line_detector"/>
+</launch>
